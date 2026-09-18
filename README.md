@@ -1,6 +1,6 @@
 # RandomPick
 
-Instagram giveaway g‘olibini adolatli tanlash: kommentlar yoki import qilingan username ro‘yxatidan, natijani saqlash va tekshirish hashi bilan.
+Instagram post havolasini kiriting — kommentlarni yuklaydi va bitta bosishda adolatli, tasodifiy g‘olibni tanlaydi. Xohlasangiz, faqat import qilingan obunachilar ro‘yxatidagilar orasidan tanlashni ham talab qilish mumkin. Har bir natija SHA-256 tekshiruv hashi bilan saqlanadi.
 
 ## Tez start (lokal demo)
 
