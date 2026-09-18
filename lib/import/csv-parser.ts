@@ -1,5 +1,5 @@
 import Papa from 'papaparse';
-import { normalizeUsername } from '@/lib/giveaway/username-normalizer';
+import { normalizeUsername, isLikelyUiNoise } from '@/lib/giveaway/username-normalizer';
 
 export interface ImportedParticipant {
   usernameOriginal: string;
@@ -126,7 +126,7 @@ export function parseTxtFile(content: string): ImportPreviewResult {
   lines.forEach((line, index) => {
     const normalized = normalizeUsername(line);
 
-    if (!normalized) {
+    if (!normalized || isLikelyUiNoise(line)) {
       invalidRows.push({ row: index + 1, value: line });
       return;
     }

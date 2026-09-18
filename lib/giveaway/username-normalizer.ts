@@ -13,6 +13,33 @@ const INSTAGRAM_PROFILE_URL_REGEX =
   /^https?:\/\/(?:www\.)?instagram\.com\/([A-Za-z0-9._]{1,30})\/?(?:\?.*)?$/;
 
 /**
+ * Common Instagram UI chrome that ends up on its own line when a comment
+ * section is copy-pasted as plain text (relative timestamps, action labels).
+ * Filtered out so it never gets mistaken for a real username.
+ */
+const UI_NOISE_WORDS = new Set([
+  'reply', 'replies', 'like', 'likes', 'view', 'more', 'translate', 'seetranslation',
+  'follow', 'following', 'edited', 'pinned', 'author', 'verified', 'ago',
+  'javob', 'javoblar', 'layk', 'layklar', "ko'proq", 'koproq', 'tarjima', 'tarjimasinikorish',
+  'kuzatish', 'kuzataman', 'izoh', 'izohlar', 'muallif',
+  'ответить', 'ответы', 'нравится', 'показать', 'перевод', 'подписаться', 'подписка', 'автор',
+]);
+const RELATIVE_TIME_REGEX = /^\d{1,3}(s|m|h|d|w|y|sek|soat|kun|hafta|oy|yil|min)$/i;
+
+/**
+ * Detects tokens that are Instagram UI chrome rather than usernames —
+ * relative timestamps ("2d", "3h"), bare like/reply counts, or action labels.
+ */
+export function isLikelyUiNoise(token: string): boolean {
+  const t = token.trim().toLowerCase();
+  if (!t) return false;
+  if (/^\d+$/.test(t)) return true;
+  if (RELATIVE_TIME_REGEX.test(t)) return true;
+  if (UI_NOISE_WORDS.has(t)) return true;
+  return false;
+}
+
+/**
  * Normalizes a username string to lowercase without @ prefix.
  * Returns null if the input is not a valid username.
  */

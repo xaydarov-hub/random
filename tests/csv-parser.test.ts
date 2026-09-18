@@ -16,4 +16,10 @@ describe('parseTxtFile', () => {
     const result = parseTxtFile('@one\n\n@two\n');
     expect(result.validUsernames.map((p) => p.usernameNormalized)).toEqual(['one', 'two']);
   });
+
+  it('filters out Instagram UI chrome from a pasted comment section', () => {
+    const result = parseTxtFile('demo_user_01\nZo\'r post!\n2d\n5\nReply\ndemo_user_02\n1h\nJavob');
+    expect(result.validUsernames.map((p) => p.usernameNormalized)).toEqual(['demo_user_01', 'demo_user_02']);
+    expect(result.invalidRows.map((r) => r.value)).toEqual(["Zo'r post!", '2d', '5', 'Reply', '1h', 'Javob']);
+  });
 });
